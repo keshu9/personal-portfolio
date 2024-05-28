@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <script src="https://kit.fontawesome.com/c4254e24a8.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <img src="logo_preview_rev_1.png" alt="logo">
+        <ul>
+            <li><a href="#memoji">ABOUT</a></li>
+            <li><a href="#projects">PROJECTS</a></li>
+            <li><a href="#contact">CONTACT</a></li>
+        </ul>
+        <div class="social">
+            <a href="https://www.instagram.com/patryk_paska?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" class="media"><i class="fa-brands fa-instagram" style="color: #ffffff;"></i></a>
+            <a href="https://www.facebook.com/patryk.paska.9" ><i class="fa-brands fa-facebook" style="color: #ffffff;"></i></a>
+        </div>
+    </div>
+    <div class="main">
+        <div class="content">
+            <div id="introduction">
+                <div class="up">
+                <h2>Cześć, nazywam się Patryk</h2>
+                <img src="memoji.png" alt="memoji" id="memoji">
+                </div>
+                <p class="text">... jestem początkującym frontendowcem. Pasjonuje mnie programowanie stron internetowych. W wolnym czasie interesuję się muzyką, co również wpływa na moje projekty, łącząc technologię z moimi pasjami. </p>
+            </div>
+            <div id="projects">
+                <h2>Projekty</h2>
+                <a href="https://github.com/ZS1MM-DEV-1XF/PatrykPaska.git">ConcertHub</a>
+                
+            </div>
+            <div id="contact">
+                <h2>Kontakt</h2>
+                <p>numer telefonu  --- >  500 500 500</p>
+                <p>mail --- >  patryk.123.123.gmail</p>
+                <p>github --- >  keshu9</p>
+            </div>
+        </div>
+        <div class="music">
+            <div class="circle">
+                <div class="middle">
+                    <div class="center"></div>
+                </div>
+            </div>
+            <div class="buttons">
+                <div onclick="prevSong()"><i class="fa-solid fa-forward fa-flip-horizontal" style="color: #ffffff; background-color: transparent;"></i></div>
+                <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlicon" style="background-color: transparent;"></i></div>
+                <div onclick="nextSong()"><i class="fa-solid fa-forward" style="color: #ffffff; background-color: transparent;"></i></div>
+            </div>
+            <div class="managment">
+                <audio  id="song">
+                    <source src="aurora.mp3" type="audio/mpeg">
+                    <source src="funk.mp3" type="audio/mpeg">
+                    <source src="happy.mp3" type="audio/mpeg">
+                    
+                </audio>
+                <input type="range" value="0" id="progress">
+            </div>
+            <div class="volume">
+                    <div class="volumeicon"><i class="fa-solid fa-volume-high" id="ctrlicon"></i></div>
+                    <input type="range" id="volume" min="0" max="0.6" step="0.005" value="0.2">
+            </div>
+        </div>
+    </div>
+
+<script>
+
+     let songs = [
+        "aurora.mp3",
+        "happy.mp3",
+        "funk.mp3"
+    ];
+    
+    let currentSongIndex = 0;
+    let progress = document.getElementById("progress")
+    let song = document.getElementById("song")
+    let ctrlicon = document.getElementById("ctrlicon")
+    let volumeControl = document.getElementById("volume");
+
+    song.onloadedmetadata = function (){
+        progress.max = song.duration;
+        progress.value = song.currentTime;
+    }
+
+    function playPause(){
+        if(ctrlicon.classList.contains("fa-pause")){
+            song.pause();
+            ctrlicon.classList.remove("fa-pause");
+            ctrlicon.classList.add("fa-play");
+        }else{
+            song.play();
+            ctrlicon.classList.add("fa-pause");
+            ctrlicon.classList.remove("fa-play");
+        }
+
+    }
+
+
+    if(song.play()){
+        setInterval(()=>{
+            progress.value = song.currentTime;
+        },500);
+    }
+
+    progress.onchange = function(){
+        song.play();
+        song.currentTime = progress.value;
+        ctrlicon.classList.add("fa-pause");
+        ctrlicon.classList.remove("fa-play");
+    }
+
+    volumeControl.oninput = function() {
+        song.volume = volumeControl.value;
+    };
+
+    function nextSong() {
+        currentSongIndex = (currentSongIndex + 1) % songs.length;
+        song.src = songs[currentSongIndex];
+        song.play();
+        ctrlicon.classList.add("fa-pause");
+        ctrlicon.classList.remove("fa-play");
+    }
+
+    function prevSong() {
+        currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+        song.src = songs[currentSongIndex];
+        song.play();
+        ctrlicon.classList.add("fa-pause");
+        ctrlicon.classList.remove("fa-play");
+    }
+
+    document.querySelector('.fa-forward').addEventListener('click', nextSong);
+    document.querySelector('.fa-forward.fa-flip-horizontal').addEventListener('click', prevSong);
+
+</script>
+
+</body>
+</html>
